@@ -1,0 +1,26 @@
+# Visual Studio
+.vs/
+
+# CMake / build output
+out/
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# Ninja
+.ninja_log
+.ninja_deps
+build.ninja
+
+# Compiled files
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.lib
+*.dll
+
+# User-specific files
+*.user
+*.suo
