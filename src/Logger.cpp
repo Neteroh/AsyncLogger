@@ -1,15 +1,24 @@
 #include "AsyncLogger/Logger.h"
+
 #include <chrono>
 #include <iostream>
+#include <sstream>
 #include <thread>
 
-Logger::Logger()
+Logger::Logger(const LoggerConfig& config)
+	: logToConsole_(config.logToConsole()),
+	logToFile_(config.logToFile()),
+	minLogLevel_(config.minLogLevel())
 {
-	logFile_.open("logs/app.log", std::ofstream::out | std::ofstream::app);
-
-	if (!logFile_.is_open())
+	if (logToFile_)
 	{
-		std::cerr << "Failed to open the log file\n";
+		logFile_.open(config.filepath(), std::ofstream::out | std::ofstream::app);
+
+		if (!logFile_.is_open())
+		{
+			std::cerr << "Failed to open the log file\n";
+			logToFile_ = false;
+		}
 	}
 };
 
@@ -46,6 +55,8 @@ std::string Logger::processMessage(const LogMessage& logMessage)
 
 void Logger::Log(LogLevel logLevel, const std::string& message)
 {
+	if (logLevel < minLogLevel_) return;
+
 	LogMessage logMessage(
 		message,
 		logLevel,
@@ -53,10 +64,12 @@ void Logger::Log(LogLevel logLevel, const std::string& message)
 		std::this_thread::get_id()
 	);
 
-	std::string formattedString = processMessage(logMessage);
+	const std::string formattedString = processMessage(logMessage);
 
-	std::cout << formattedString;
-	logFile_ << formattedString;
+	if (logToConsole_)
+		std::cout << formattedString;
+	if (logToFile_ && logFile_.is_open())
+		logFile_ << formattedString;
 }
 
 void Logger::Debug(const std::string& message)
@@ -86,6 +99,9 @@ void Logger::Critical(const std::string& message)
 
 Logger::~Logger()
 {
-	logFile_.flush();
-	logFile_.close();
+	if (logFile_.is_open())
+	{
+		logFile_.flush();
+		logFile_.close();
+	}
 };

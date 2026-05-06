@@ -9,9 +9,12 @@ add_executable(AsyncLogger
     "src/main.cpp"
     "src/Logger.cpp"
     "src/LogMessage.cpp"
+    "src/LoggerConfig.cpp"
     "include/AsyncLogger/Logger.h"
     "include/AsyncLogger/LogMessage.h"
-    "include/AsyncLogger/LogLevel.h")
+    "include/AsyncLogger/LogLevel.h"
+    "include/AsyncLogger/LoggerConfig.h"
+)
 
 target_compile_features(AsyncLogger PRIVATE cxx_std_20)
 

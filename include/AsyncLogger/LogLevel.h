@@ -2,7 +2,6 @@
 
 
 enum LogLevel {
-	UNKNOWN,
 	DEBUG,
 	INFO,
 	WARNING,

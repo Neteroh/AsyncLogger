@@ -1,16 +1,16 @@
 #include "AsyncLogger/LogMessage.h"
 #include <utility>
 
-LogMessage::LogMessage(std::string message,
-	LogLevel logLevel,
-	std::chrono::time_point<std::chrono::system_clock> timestamp,
-	std::thread::id threadId)
-	: message_(std::move(message)),
-	logLevel_(std::move(logLevel)),
-	timestamp_(std::move(timestamp)),
-	threadId_(std::move(threadId))
+LogMessage::LogMessage(
+    std::string message,
+    LogLevel logLevel,
+    std::chrono::time_point<std::chrono::system_clock> timestamp,
+    std::thread::id threadId)
+    : message_(std::move(message)),
+    logLevel_(logLevel),
+    timestamp_(timestamp),
+    threadId_(threadId)
 {
-
 }
 
 const std::string& LogMessage::message() const noexcept
